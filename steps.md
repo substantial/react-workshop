@@ -81,6 +81,11 @@ export default QndReact;
 
 ```javascript
 // file: src/qnd-react-dom.js
+import * as snabbdom from "snabbdom";
+import propsModule from "snabbdom/modules/props";
+import eventlistenersModule from "snabbdom/modules/eventlisteners";
+
+const reconcile = snabbdom.init([propsModule, eventlistenersModule]);
 
 // React.render(<App />, document.getElementById('root'));
 // el -> <App />
@@ -102,6 +107,8 @@ export default QndReactDom;
 
 ```javascript
 // file: src/index.js
+import QndReactDom from "./qnd-react-dom";
+// ...
 QndReactDom.render(App, document.getElementById("root"));
 ```
 
@@ -116,7 +123,7 @@ import propsModule from "snabbdom/modules/props";
 
 // propsModule -> this helps in patching text attributes
 const reconcile = snabbdom.init([propsModule]);
-// we need to maintain the latest rootVNode returned by render
+// we need to maintain the latest rootDomNode returned by render
 let rootVNode;
 
 // React.render(<App />, document.getElementById('root'));
@@ -157,7 +164,7 @@ const App = (
   <div>
     <h1 className="primary">QndReact is Quick and dirty react</h1>
     <p>It is about building your own React in 90 lines of JavsScript</p>
-    <Greeting name={"Ameer Jhan"} />
+    <Greeting name="Robin" />
   </div>
 );
 
@@ -190,12 +197,10 @@ export default QndReact;
 ### Step 10: Add a Component class
 
 ```javascript
-// file: src/qnd-react-dom.js
+// file: src/qnd-react.js
 // component base class
 class Component {
   constructor() {}
-
-  componentDidMount() {}
 
   setState(partialState) {}
 
@@ -242,7 +247,7 @@ const App = (
   <div>
     <h1 className="primary">QndReact is Quick and dirty react</h1>
     <p>It is about building your own React in 90 lines of JavsScript</p>
-    <Greeting name="Ameer Jhan" />
+    <Greeting name="Robin" />
     <Counter />
   </div>
 );
