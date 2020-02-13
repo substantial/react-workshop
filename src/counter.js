@@ -7,6 +7,13 @@ export default class Counter extends QndReact.Component {
     this.state = {
       count: 0
     };
+
+    // update the count every second
+    setInterval(() => {
+      this.setState({
+        count: this.state.count + 1
+      });
+    }, 1000);
   }
 
   render() {

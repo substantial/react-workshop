@@ -7,7 +7,10 @@ const createElement = (type, props = {}, ...children) => {
   if (type.prototype && type.prototype.isQndReactClassComponent) {
     const componentInstance = new type(props);
 
-    return componentInstance.render();
+    // remember the current vNode instance
+    componentInstance.__vNode = componentInstance.render();
+
+    return componentInstance.__vNode;
   }
 
   console.log(type, props, children);
@@ -22,7 +25,15 @@ class Component {
 
   componentDidMount() {}
 
-  setState(partialState) {}
+  setState(partialState) {
+    // update the state by adding the partial state
+    this.state = {
+      ...this.state,
+      ...partialState
+    };
+    // call the __updater function that QndReactDom gave
+    QndReact.__updater(this);
+  }
 
   render() {}
 }
