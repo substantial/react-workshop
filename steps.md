@@ -300,7 +300,7 @@ Add the updater function:
 
 ```javascript
 // QndReactDom telling React how to update DOM
-QndReact.__updater = () => {
+QndReact.__updater = componentInstance => {
   // logic on how to update the DOM when you call this.setState
 
   // get the oldVNode stored in __vNode
@@ -320,7 +320,7 @@ const QndReactDom = {
 export default QndReactDom;
 ```
 
-Update createElement to work with classes:
+Update createElement to keep track of the current virtual node:
 
 ```javascript
 // file: src/qnd-react.js
@@ -347,7 +347,7 @@ const createElement = (type, props = {}, ...children) => {
 };
 ```
 
-Add the Component class:
+Update the Component class:
 
 ```javascript
 // file: src/qnd-react.js
@@ -363,7 +363,7 @@ class Component {
       ...this.state,
       ...partialState
     };
-    // call the __updater function that QndReactDom gave
+    // call the __updater function that QndReactDom gave us
     QndReact.__updater(this);
   }
 
@@ -371,7 +371,7 @@ class Component {
 }
 ```
 
-Add a counter function component:
+Update the counter function component:
 
 ```javascript
 // file: src/counter.js
@@ -389,10 +389,6 @@ export default class Counter extends QndReact.Component {
         count: this.state.count + 1
       });
     }, 1000);
-  }
-
-  componentDidMount() {
-    console.log("Component mounted");
   }
 
   render() {
@@ -421,10 +417,10 @@ For our onClick handler to work correctly, we have to tell snabbdom about it.
 
 ```javascript
 // file: src/qnd-react-dom.js
+import QndReact from "./qnd-react";
 import * as snabbdom from "snabbdom";
 import propsModule from "snabbdom/modules/props";
 import eventlistenersModule from "snabbdom/modules/eventlisteners";
-import QndReact from "./qnd-react";
 
 // propsModule -> this helps in patching text attributes
 // eventlistenersModule -> this helps in patching event attributes
@@ -432,6 +428,7 @@ const reconcile = snabbdom.init([propsModule, eventlistenersModule]);
 ```
 
 ```javascript
+// file: src/qnd-react.js
 const createElement = (type, props = {}, ...children) => {
   // After the current fuction body
 
