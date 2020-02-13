@@ -1,9 +1,10 @@
 import QndReact from "./qnd-react";
 import * as snabbdom from "snabbdom";
 import propsModule from "snabbdom/modules/props";
+import eventlistenersModule from "snabbdom/modules/eventlisteners";
 
 // propsModule -> this helps in patching text attributes
-const reconcile = snabbdom.init([propsModule]);
+const reconcile = snabbdom.init([propsModule, eventlistenersModule]);
 let rootNode;
 
 const render = (el, rootDomElement) => {

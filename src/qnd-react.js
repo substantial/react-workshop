@@ -17,7 +17,25 @@ const createElement = (type, props = {}, ...children) => {
   if (typeof type === "function") {
     return type(props);
   }
-  return h(type, { props }, children);
+
+  let dataProps = {};
+  let eventProps = {};
+
+  // This is to seperate out the text attributes and event listener attributes
+  for (let propKey in props) {
+    // event props always startwith on eg. onClick, onDblClick etc.
+    if (propKey.startsWith("on")) {
+      // onClick -> click
+      const event = propKey.substring(2).toLowerCase();
+      eventProps[event] = props[propKey];
+    } else {
+      dataProps[propKey] = props[propKey];
+    }
+  }
+
+  // props -> snabbdom's internal text attributes
+  // on -> snabbdom's internal event listeners attributes
+  return h(type, { props: dataProps, on: eventProps }, children);
 };
 
 class Component {
