@@ -299,6 +299,7 @@ import propsModule from "snabbdom/modules/props";
 Add the updater function:
 
 ```javascript
+// file: src/qnd-react-dom.js
 // QndReactDom telling React how to update DOM
 QndReact.__updater = componentInstance => {
   // logic on how to update the DOM when you call this.setState
@@ -397,7 +398,7 @@ export default class Counter extends QndReact.Component {
 }
 ```
 
-### Step 14: Handle state changes
+### Step 14: Event handlers
 
 ```javascript
 // file: src/counter.js
